@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             OpenApiTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "OpenApi Project",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
