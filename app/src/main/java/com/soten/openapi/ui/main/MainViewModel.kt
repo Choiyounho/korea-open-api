@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.soten.openapi.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
@@ -15,10 +15,10 @@ class MainViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
 
-    private val _error = MutableStateFlow<Throwable?>(null)
-    val error = _error.asStateFlow()
+    private val _error = MutableSharedFlow<Throwable?>()
+    val error = _error.asSharedFlow()
 
     val movies = movieRepository.getMovies()
+        .catch { _error.emit(it) }
         .cachedIn(viewModelScope)
-        .catch { _error.value = it }
 }

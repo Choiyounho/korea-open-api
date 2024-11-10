@@ -28,8 +28,7 @@ fun MainScreen(
     val context = LocalContext.current
     val movies = mainViewModel.movies.collectAsLazyPagingItems()
 
-    when (val error = mainViewModel.error.collectAsState().value) {
-        null -> Unit
+    when (val error = mainViewModel.error.collectAsState(null).value) {
         is HttpException -> handleHttpException(context, error)
         else -> handleUnknownException(context, error)
     }
@@ -88,6 +87,6 @@ fun handleHttpException(context: Context, error: HttpException) {
     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
 }
 
-fun handleUnknownException(context: Context, error: Throwable) {
-    Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+fun handleUnknownException(context: Context, error: Throwable?) {
+    Toast.makeText(context, error?.message, Toast.LENGTH_SHORT).show()
 }

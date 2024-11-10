@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.soten.openapi.data.local.db.entity.MovieEntity
 import com.soten.openapi.data.mapper.toModel
 import com.soten.openapi.data.source.MovieLocalDataSource
 import com.soten.openapi.data.source.MovieRemoteDataSource
