@@ -7,4 +7,21 @@ com.soten.openapi.data.remote.api 패키지에 있는
 AppInfo의 KEY 값을 조절합니다.
 
 ### 사용한 기술 스택, 아키텍처
-### 문제 해결 방법
+
+**Library**
+- Network
+  - Retrofit2
+  - okhttp3
+- Serializer
+  - KotlinX
+- Di
+    - Hilt
+- Async
+    - Coroutines
+- Compose
+- Room
+
+**Architecture**
+- MVVM
+- Repository Pattern
+- Clean Architecture
