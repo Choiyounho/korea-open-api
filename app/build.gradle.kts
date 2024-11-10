@@ -76,6 +76,7 @@ dependencies {
 
     implementation(libs.roomKtx)
     implementation(libs.room)
+    implementation(libs.androidx.room.paging)
     ksp(libs.roomCompiler)
 
     implementation(libs.bundles.retrofit)
