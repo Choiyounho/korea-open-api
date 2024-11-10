@@ -1,25 +1,26 @@
 package com.soten.openapi.data.source
 
-import com.soten.openapi.data.local.db.dao.MovieDao
-import com.soten.openapi.data.local.db.dao.RemoteKeyDao
+import androidx.room.withTransaction
+import com.soten.openapi.data.local.db.AppDatabase
 import com.soten.openapi.data.local.db.entity.MovieEntity
 import com.soten.openapi.data.local.db.entity.RemoteKey
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(
-    private val movieDao: MovieDao,
-    private val remoteKeyDao: RemoteKeyDao
+    private val appDatabase: AppDatabase,
 ) {
 
-    suspend fun insertMovies(movies: List<MovieEntity>) = movieDao.insertMovies(movies)
+    suspend fun insertMovies(movies: List<MovieEntity>) = appDatabase.movieDao().insertMovies(movies)
 
-    suspend fun deleteAllMovies() = movieDao.clearAll()
+    suspend fun deleteAllMovies() = appDatabase.movieDao().clearAll()
 
-    fun getPagedMovies() = movieDao.getPagedMovies()
+    fun getPagedMovies() = appDatabase.movieDao().getPagedMovies()
 
-    suspend fun getRemoteKey() = remoteKeyDao.getRemoteKey()
+    suspend fun getRemoteKey() = appDatabase.remoteKeyDao().getRemoteKey()
 
-    suspend fun insertOrUpdate(remoteKey: RemoteKey) = remoteKeyDao.insertOrUpdate(remoteKey)
+    suspend fun insertOrUpdate(remoteKey: RemoteKey) = appDatabase.remoteKeyDao().insertOrUpdate(remoteKey)
 
-    suspend fun clearRemoteKeys() = remoteKeyDao.clearRemoteKeys()
+    suspend fun clearRemoteKeys() = appDatabase.remoteKeyDao().clearRemoteKeys()
+
+    suspend fun withTransaction(block: suspend () -> Unit) = appDatabase.withTransaction(block)
 }

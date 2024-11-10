@@ -39,13 +39,13 @@ class MovieRemoteMediator(
             val responseToEntities =
                 movieRemoteDataSource.getMovies(page = page).movieListResponse.movieItemsResponse.map { it.toEntity() }
 
-            movieLocalDataSource.let {
+            movieLocalDataSource.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    it.deleteAllMovies()
-                    it.clearRemoteKeys()
+                    movieLocalDataSource.deleteAllMovies()
+                    movieLocalDataSource.clearRemoteKeys()
                 }
-                it.insertMovies(responseToEntities)
-                it.insertOrUpdate(RemoteKey(nextKey = page + 1, lastUpdated = System.currentTimeMillis()))
+                movieLocalDataSource.insertMovies(responseToEntities)
+                movieLocalDataSource.insertOrUpdate(RemoteKey(nextKey = page + 1, lastUpdated = System.currentTimeMillis()))
             }
 
             MediatorResult.Success(endOfPaginationReached = responseToEntities.isEmpty())
