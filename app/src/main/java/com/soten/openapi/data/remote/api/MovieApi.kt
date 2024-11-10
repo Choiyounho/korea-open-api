@@ -7,9 +7,9 @@ import retrofit2.http.Query
 interface MovieApi {
 
     @GET(ApiInfo.EndPoints.SEARCH)
-    suspend fun getMovieList(
-        @Query("key") key: String = ApiInfo.KEY,
+    suspend fun getMovies(
         @Query("curPage") page: Int = DEFAULT_PAGE,
+        @Query("key") key: String = ApiInfo.KEY,
         @Query("itemPerPage") itemPerPage: Int = DEFAULT_ITEM_PER_PAGE
     ): MovieResponse
 
