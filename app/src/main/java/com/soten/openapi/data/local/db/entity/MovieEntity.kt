@@ -9,7 +9,5 @@ data class MovieEntity(
     val code: String,
     val movieName: String,
     val openDate: String,
-    val endDate: String,
     val genreName: String,
-    val price: Int,
 )
