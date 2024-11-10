@@ -25,4 +25,7 @@ object LocalModule {
     @Provides
     fun providesMovieDao(appDatabase: AppDatabase) = appDatabase.movieDao()
 
+    @Singleton
+    @Provides
+    fun providesRemoteKeyDao(appDatabase: AppDatabase) = appDatabase.remoteKeyDao()
 }
