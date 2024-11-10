@@ -30,6 +30,7 @@ fun MainScreen(
 
     when (val error = mainViewModel.error.collectAsState(null).value) {
         is HttpException -> handleHttpException(context, error)
+        null -> Unit
         else -> handleUnknownException(context, error)
     }
 
@@ -88,5 +89,5 @@ fun handleHttpException(context: Context, error: HttpException) {
 }
 
 fun handleUnknownException(context: Context, error: Throwable?) {
-    Toast.makeText(context, error?.message, Toast.LENGTH_SHORT).show()
+    Toast.makeText(context, error?.message.toString(), Toast.LENGTH_SHORT).show()
 }

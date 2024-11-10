@@ -10,6 +10,7 @@ import com.soten.openapi.data.mapper.toEntity
 import com.soten.openapi.data.remote.api.MovieApi.Companion.DEFAULT_PAGE
 import com.soten.openapi.data.source.MovieLocalDataSource
 import com.soten.openapi.data.source.MovieRemoteDataSource
+import kotlinx.coroutines.flow.last
 import okio.IOException
 import retrofit2.HttpException
 
@@ -36,8 +37,13 @@ class MovieRemoteMediator(
                     nextKey
                 }
             }
+            
             val responseToEntities =
-                movieRemoteDataSource.getMovies(page = page).movieListResponse.movieItemsResponse.map { it.toEntity() }
+                movieRemoteDataSource.getMovies(page = page)
+                    .last()
+                    .movieListResponse
+                    .movieItemsResponse
+                    .map { it.toEntity() }
 
             movieLocalDataSource.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -45,7 +51,12 @@ class MovieRemoteMediator(
                     movieLocalDataSource.clearRemoteKeys()
                 }
                 movieLocalDataSource.insertMovies(responseToEntities)
-                movieLocalDataSource.insertOrUpdate(RemoteKey(nextKey = page + 1, lastUpdated = System.currentTimeMillis()))
+                movieLocalDataSource.insertOrUpdate(
+                    RemoteKey(
+                        nextKey = page + 1,
+                        lastUpdated = System.currentTimeMillis()
+                    )
+                )
             }
 
             MediatorResult.Success(endOfPaginationReached = responseToEntities.isEmpty())
